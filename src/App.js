@@ -1,10 +1,13 @@
+import { useState } from "react";
+import { FormCadastro } from "./components/FormCadastro/FormCadastro";
 
 function App() {
-  return (
-    <>
-    <h1>Hello world</h1>
-    </>
-  );
+    const [id, setId] = useState(0)
+    return (
+        <>
+            <FormCadastro id={id} setId={setId}/>
+        </>
+    );
 }
 
 export default App;
