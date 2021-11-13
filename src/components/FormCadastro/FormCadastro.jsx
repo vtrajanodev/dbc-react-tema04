@@ -34,7 +34,7 @@ export const FormCadastro = () => {
         }
         if(!values.phone){
             errors.phone = 'Campo obrigatório';
-        }else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/.test(values.phone)) {
+        }else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})-?(\d{4}))$/.test(values.phone)) {
             errors.phone = 'Telefone inválido';
         }
 
@@ -127,7 +127,6 @@ export const FormCadastro = () => {
                         <input
                             id="phone"
                             name="phone"
-                            type="number"
                             placeholder="Ex: 92 9999-9999"
                             onChange={formik.handleChange}
                             value={formik.values.phone}
