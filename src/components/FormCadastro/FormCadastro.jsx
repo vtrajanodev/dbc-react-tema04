@@ -8,17 +8,34 @@ export const FormCadastro = () => {
     const [listUsers, setListUsers] = useState([])
     const [id, setId] = useState(1)
 
-    // const validate = values => {
-    //     const errors = {}
+    const validate = values => {
+        const errors = {}
 
-    //     if (!values.email) {
-    //         errors.email = 'Required';
-    //     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    //         errors.email = 'Invalid email address';
-    //     }
+        //Validação do firstName
+        if(!values.firstName){
+            errors.firstName = 'Campo obrigatório'
+        }else if(!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.firstName)){
+            errors.firstName = 'Permitido apenas letras neste campo.'
+        }
+        //Validação do sobrenome
+        if(!values.lastName){
+            errors.lastName = 'Campo obrigatório'
+        }else if(!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.lastName)){
+            errors.lastName = 'Permitido apenas letras neste campo.'
+        }
+        //Validação do e-mail
+        if (!values.email) {
+            errors.email = 'Campo obrigatório';
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            errors.email = 'Email inválido';
+        }
 
-    //     return errors
-    // }
+        if (!values.address) {
+            errors.address = 'Campo obrigatório';
+        }
+
+        return errors
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -28,7 +45,7 @@ export const FormCadastro = () => {
             address: '',
             phone: ''
         },
-
+        validate,
         onSubmit: values => {
             setId(id + 1);
             values.id = id;
@@ -52,9 +69,13 @@ export const FormCadastro = () => {
                             type="text"
                             name="firstName"
                             id="firstName"
+                            placeholder="Ex: John"
                             onChange={formik.handleChange}
                             value={formik.values.firstName}
                         />
+                        {formik.errors.firstName && (
+                            <span>{formik.errors.firstName}</span>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="lastName">Sobrenome:</label>
@@ -62,9 +83,13 @@ export const FormCadastro = () => {
                             id="lastName"
                             name="lastName"
                             type="text"
+                            placeholder="Ex: Doe"
                             onChange={formik.handleChange}
                             value={formik.values.lastName}
                         />
+                        {formik.errors.lastName && (
+                            <span>{formik.errors.lastName}</span>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="email">E-mail:</label>
@@ -72,9 +97,13 @@ export const FormCadastro = () => {
                             id="email"
                             name="email"
                             type="email"
+                            placeholder="Ex: gg@gg.com"
                             onChange={formik.handleChange}
                             value={formik.values.email}
                         />
+                        {formik.errors.email && (
+                            <span>{formik.errors.email}</span>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="address">Endereço:</label>
@@ -82,18 +111,23 @@ export const FormCadastro = () => {
                             id="address"
                             name="address"
                             type="text"
+                            placeholder="Ex: Rua dos Alfeneiros, Nº 4, Harry Potter."
                             onChange={formik.handleChange}
                             value={formik.values.address}
                         />
+                        {formik.errors.address && (
+                            <span>{formik.errors.address}</span>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="phone">Telefone:</label>
                         <input
                             id="phone"
                             name="phone"
-                            type="number"
+                            placeholder="Ex: 92 9999-9999"
                             onChange={formik.handleChange}
                             value={formik.values.phone}
+
                         />
                     </div>
                     <div>
