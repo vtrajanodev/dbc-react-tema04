@@ -7,20 +7,22 @@ export const FormCadastro = () => {
 
     const [listUsers, setListUsers] = useState([])
     const [id, setId] = useState(1)
+    const [buttonTitle, setButtonTitle] = useState('Cadastrar')
+
 
     const validate = values => {
         const errors = {}
 
         //Validação do firstName
-        if(!values.firstName){
+        if (!values.firstName) {
             errors.firstName = 'Campo obrigatório'
-        }else if(!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.firstName)){
+        } else if (!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.firstName)) {
             errors.firstName = 'Permitido apenas letras neste campo.'
         }
         //Validação do sobrenome
-        if(!values.lastName){
+        if (!values.lastName) {
             errors.lastName = 'Campo obrigatório'
-        }else if(!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.lastName)){
+        } else if (!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.lastName)) {
             errors.lastName = 'Permitido apenas letras neste campo.'
         }
         //Validação do e-mail
@@ -32,9 +34,9 @@ export const FormCadastro = () => {
         if (!values.address) {
             errors.address = 'Campo obrigatório';
         }
-        if(!values.phone){
+        if (!values.phone) {
             errors.phone = 'Campo obrigatório';
-        }else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})-?(\d{4}))$/.test(values.phone)) {
+        } else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})-?(\d{4}))$/.test(values.phone)) {
             errors.phone = 'Telefone inválido';
         }
 
@@ -51,13 +53,43 @@ export const FormCadastro = () => {
         },
         validate,
         onSubmit: values => {
-            setId(id + 1);
-            values.id = id;
-            setListUsers([...listUsers, values]);
-            formik.resetForm();
-            console.log(values);
-        }
+            if (buttonTitle === 'Cadastrar') {
+                setId(id + 1);
+                values.id = id;
+                setListUsers([...listUsers, values]);
+                formik.resetForm();
+            } else {
+                let i = id - 1
+                setListUsers([...listUsers ,listUsers[i] = values ])
+                setButtonTitle('Cadastrar')
+                formik.resetForm();
+            }
+        },
     })
+
+    const editarUsuario = (id) => {
+        setButtonTitle('Salvar alterações')
+        const usuario = listUsers.find(user => user.id === id)
+        console.log(id)
+        console.log(usuario)
+
+        formik.values.firstName = usuario.firstName;
+        formik.values.lastName = usuario.lastName;
+        formik.values.email = usuario.email;
+        formik.values.address = usuario.address;
+        formik.values.phone = usuario.phone;
+
+    }
+
+    const excluirUsuario = id => {
+        const usuariosFiltrados = listUsers.filter(user => user.id !== id)
+        setListUsers(usuariosFiltrados)
+        console.log(usuariosFiltrados)
+        console.log(id)
+    }
+
+
+
     return (
         <>
             <div className="container">
@@ -137,7 +169,7 @@ export const FormCadastro = () => {
                     </div>
                     <div>
                         <button type="submit">
-                            Cadastrar
+                            {buttonTitle}
                         </button>
                     </div>
                 </form>
@@ -159,8 +191,8 @@ export const FormCadastro = () => {
                                 <p>Telefone: {user.phone}</p>
                             </div>
                             <div className={styles.flexColumn}>
-                                <button>Editar</button>
-                                <button>Excluir</button>
+                                <button onClick={() => editarUsuario(user.id)}>Editar</button>
+                                <button onClick={() => excluirUsuario(user.id)}>Excluir</button>
                             </div>
                         </div>
                     ))}
