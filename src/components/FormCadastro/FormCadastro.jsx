@@ -29,9 +29,13 @@ export const FormCadastro = () => {
         } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
             errors.email = 'Email inválido';
         }
-
         if (!values.address) {
             errors.address = 'Campo obrigatório';
+        }
+        if(!values.phone){
+            errors.phone = 'Campo obrigatório';
+        }else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/.test(values.phone)) {
+            errors.phone = 'Telefone inválido';
         }
 
         return errors
@@ -54,7 +58,6 @@ export const FormCadastro = () => {
             console.log(values);
         }
     })
-
     return (
         <>
             <div className="container">
@@ -124,11 +127,14 @@ export const FormCadastro = () => {
                         <input
                             id="phone"
                             name="phone"
+                            type="number"
                             placeholder="Ex: 92 9999-9999"
                             onChange={formik.handleChange}
                             value={formik.values.phone}
-
                         />
+                        {formik.errors.phone && (
+                            <span>{formik.errors.phone}</span>
+                        )}
                     </div>
                     <div>
                         <button type="submit">
