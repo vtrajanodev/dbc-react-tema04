@@ -10,7 +10,7 @@ body {
 
 .container {
     max-width: 900px;
-    margin: 5rem auto 5rem;
+    margin: 1rem auto 3rem;
     border: 1px solid #343a40;
     border-radius: .3rem;
     height: auto;
