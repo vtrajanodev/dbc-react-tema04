@@ -7,6 +7,7 @@ export const FormCadastro = () => {
 
     const [listUsers, setListUsers] = useState([])
     const [id, setId] = useState(1)
+    const [isEditing, setIsEditing] = useState(false)
     const [buttonTitle, setButtonTitle] = useState('Cadastrar')
 
 
@@ -14,31 +15,31 @@ export const FormCadastro = () => {
         const errors = {}
 
         //Validação do firstName
-        if (!values.firstName) {
-            errors.firstName = 'Campo obrigatório'
-        } else if (!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.firstName)) {
-            errors.firstName = 'Permitido apenas letras neste campo.'
-        }
-        //Validação do sobrenome
-        if (!values.lastName) {
-            errors.lastName = 'Campo obrigatório'
-        } else if (!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.lastName)) {
-            errors.lastName = 'Permitido apenas letras neste campo.'
-        }
-        //Validação do e-mail
-        if (!values.email) {
-            errors.email = 'Campo obrigatório';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-            errors.email = 'Email inválido';
-        }
-        if (!values.address) {
-            errors.address = 'Campo obrigatório';
-        }
-        if (!values.phone) {
-            errors.phone = 'Campo obrigatório';
-        } else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})-?(\d{4}))$/.test(values.phone)) {
-            errors.phone = 'Telefone inválido';
-        }
+        // if (!values.firstName) {
+        //     errors.firstName = 'Campo obrigatório'
+        // } else if (!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.firstName)) {
+        //     errors.firstName = 'Permitido apenas letras neste campo.'
+        // }
+        // //Validação do sobrenome
+        // if (!values.lastName) {
+        //     errors.lastName = 'Campo obrigatório'
+        // } else if (!/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/.test(values.lastName)) {
+        //     errors.lastName = 'Permitido apenas letras neste campo.'
+        // }
+        // //Validação do e-mail
+        // if (!values.email) {
+        //     errors.email = 'Campo obrigatório';
+        // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        //     errors.email = 'Email inválido';
+        // }
+        // if (!values.address) {
+        //     errors.address = 'Campo obrigatório';
+        // }
+        // if (!values.phone) {
+        //     errors.phone = 'Campo obrigatório';
+        // } else if (!/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})-?(\d{4}))$/.test(values.phone)) {
+        //     errors.phone = 'Telefone inválido';
+        // }
 
         return errors
     }
@@ -53,24 +54,29 @@ export const FormCadastro = () => {
         },
         validate,
         onSubmit: values => {
-            if (buttonTitle === 'Cadastrar') {
+            if (isEditing === false) {
                 setId(id + 1);
                 values.id = id;
                 setListUsers([...listUsers, values]);
                 formik.resetForm();
             } else {
                 let i = id - 1
-                setListUsers([...listUsers ,listUsers[i] = values ])
+                listUsers[i] = values
+                let userEdited = listUsers[i]
+                console.log(userEdited)
+                setListUsers([...listUsers.filter(user => user.id !== userEdited.id), userEdited])
                 setButtonTitle('Cadastrar')
+                setIsEditing(false)
                 formik.resetForm();
+                
             }
         },
     })
 
     const editarUsuario = (id) => {
+        setIsEditing(true)
         setButtonTitle('Salvar alterações')
         const usuario = listUsers.find(user => user.id === id)
-        console.log(id)
         console.log(usuario)
 
         formik.values.firstName = usuario.firstName;
@@ -78,8 +84,9 @@ export const FormCadastro = () => {
         formik.values.email = usuario.email;
         formik.values.address = usuario.address;
         formik.values.phone = usuario.phone;
-
     }
+
+
 
     const excluirUsuario = id => {
         const usuariosFiltrados = listUsers.filter(user => user.id !== id)
@@ -87,8 +94,6 @@ export const FormCadastro = () => {
         console.log(usuariosFiltrados)
         console.log(id)
     }
-
-
 
     return (
         <>
@@ -187,11 +192,11 @@ export const FormCadastro = () => {
                                 <h3>Nome: {user.firstName}</h3>
                                 <h3>Sobrenome: {user.lastName}</h3>
                                 <p>E-mail: {user.email}</p>
-                                <p>Endereço: {user.addres}</p>
+                                <p>Endereço: {user.address}</p>
                                 <p>Telefone: {user.phone}</p>
                             </div>
                             <div className={styles.flexColumn}>
-                                <button onClick={() => editarUsuario(user.id)}>Editar</button>
+                                <button onClick={() => editarUsuario(user.id, index)}>Editar</button>
                                 <button onClick={() => excluirUsuario(user.id)}>Excluir</button>
                             </div>
                         </div>
