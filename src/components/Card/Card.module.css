@@ -1,0 +1,52 @@
+.title {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: .5rem;
+}
+
+h3:nth-child(2){
+    margin-bottom: .5rem;
+}
+
+p {
+    margin: .5rem 0;
+}
+
+p:last-child {
+    margin: 0;
+}
+
+.card {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 1rem;
+    padding: 1rem;
+    border: 1px solid #343a40;
+    border-radius: 0.25rem;
+}
+
+.card:hover{
+    background-color: #ccc
+}
+
+.divCards {
+    display: block;
+    margin: 0 auto;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+button:last-child{
+    margin-top: 20px;
+}
+
+form div {
+    margin-bottom: 1.2rem;
+}

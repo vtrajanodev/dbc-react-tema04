@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import InputMask from 'react-input-mask';
+import { Card } from '../Card/Card';
 import styles from './FormCadastro.module.css'
 
 
@@ -43,7 +44,6 @@ export const FormCadastro = () => {
         return errors
     }
 
-
     const formik = useFormik({
         initialValues: {
             firstName: '',
@@ -65,7 +65,7 @@ export const FormCadastro = () => {
                 let i = id - 1
                 listUsers[i] = values
                 let userEdited = listUsers[i]
-                setListUsers([...listUsers.filter(user => user.id !== userEdited.id), userEdited].sort((a,b) => a-b))
+                setListUsers([...listUsers.filter(user => user.id !== userEdited.id), userEdited].sort((a, b) => a - b))
                 console.log(userEdited.id)
                 formik.resetForm();
                 setButtonTitle('Cadastrar')
@@ -154,7 +154,7 @@ export const FormCadastro = () => {
                         <label htmlFor="phone">Telefone:</label>
                         <InputMask
                             mask="99 99999 9999"
-                    
+
                             placeholder="Ex: 92 99999 9999"
                             onChange={formik.handleChange}
                             value={formik.values.phone}
@@ -171,30 +171,8 @@ export const FormCadastro = () => {
                     </div>
                 </form>
             </div>
-
-            <div className="container">
-                <div className={styles.title}>
-                    <h2>Lista de Usuários</h2>
-                </div>
-
-                <div className={styles.divCards}>
-                    {listUsers.map((user, index) => (
-                        <div key={index} className={styles.card}>
-                            <div>
-                                <h3>Nome: {user.firstName}</h3>
-                                <h3>Sobrenome: {user.lastName}</h3>
-                                <p>E-mail: {user.email}</p>
-                                <p>Endereço: {user.address}</p>
-                                <p>Telefone: {user.phone}</p>
-                            </div>
-                            <div className={styles.flexColumn}>
-                                <button onClick={() => editarUsuario(user.id)}>Editar</button>
-                                <button onClick={() => excluirUsuario(user.id)}>Excluir</button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            
+            <Card listUsers={listUsers} editarUsuario={editarUsuario} excluirUsuario={excluirUsuario}/>
         </>
     );
 }
