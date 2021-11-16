@@ -12,7 +12,6 @@ export const FormCadastro = () => {
     const [isEditing, setIsEditing] = useState(false)
     const [buttonTitle, setButtonTitle] = useState('Cadastrar')
 
-
     const validate = values => {
         const errors = {}
 
@@ -100,6 +99,7 @@ export const FormCadastro = () => {
                             type="text"
                             name="firstName"
                             id="firstName"
+                            maxLength="50"
                             placeholder="Ex: John"
                             onChange={formik.handleChange}
                             value={formik.values.firstName}
@@ -114,6 +114,7 @@ export const FormCadastro = () => {
                             id="lastName"
                             name="lastName"
                             type="text"
+                            maxLength="50"
                             placeholder="Ex: Doe"
                             onChange={formik.handleChange}
                             value={formik.values.lastName}
@@ -128,6 +129,7 @@ export const FormCadastro = () => {
                             id="email"
                             name="email"
                             type="email"
+                            maxLength="50"
                             placeholder="Ex: gg@gg.com"
                             onChange={formik.handleChange}
                             value={formik.values.email}
@@ -142,7 +144,8 @@ export const FormCadastro = () => {
                             id="address"
                             name="address"
                             type="text"
-                            placeholder="Ex: Rua dos Alfeneiros, Nº 4, Harry Potter."
+                            maxLength="80"
+                            placeholder="Ex: Rua dos Alfeneiros, Nº 4"
                             onChange={formik.handleChange}
                             value={formik.values.address}
                         />
