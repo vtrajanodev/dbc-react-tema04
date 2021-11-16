@@ -54,7 +54,7 @@ export const FormCadastro = () => {
         enableReinitialize: true,
         validate,
         onSubmit: values => {
-            if (isEditing === false) {
+            if (!isEditing) {
                 setId(id + 1);
                 values.id = id;
                 setListUsers([...listUsers, values]);
